@@ -1,0 +1,43 @@
+﻿@model Sistema_Inventario.Models.CategoriaModel
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<div class="text-center">
+    <h4> Eliminar categoria<i class="bi bi-trash mx-3"></i></h4>
+    <hr />
+</div>
+<div class="container">
+    <table class="table table-bordered">
+        <tbody>
+            <tr>
+                <th class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Id)
+                </th>
+                <td class="col-sm-10">
+                    @Html.DisplayFor(model => model.Id)
+                </td>
+            </tr>
+            <tr>
+                <th class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Nombre)
+                </th>
+                <td class="col-sm-10">
+                    @Html.DisplayFor(model => model.Nombre)
+                </td>
+            </tr>
+            <tr>
+                <th class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Descripcion)
+                </th>
+                <td class="col-sm-10">
+                    @Html.DisplayFor(model => model.Descripcion)
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<form asp-action="Delete" class="d-flex flex-row g-2">
+    <input type="hidden" name="id" value="@Model.Id" readonly />
+    <button type="submit"  class="btn btn-danger mx-2">Eliminar<i class="bi bi-trash2-fill"></i></button>
+</form>

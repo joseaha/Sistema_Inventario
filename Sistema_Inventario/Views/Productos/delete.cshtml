@@ -1,0 +1,61 @@
+﻿@model Sistema_Inventario.Models.ProductoModel
+
+@{
+    ViewData["Title"] = "detalle";
+}
+
+<div class="text-center">
+    <h4> Producto por eliminar: @Model.NombreProducto <i class="bi bi-box mx-2"></i></h4>
+    <hr />
+</div>
+<div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <tr>
+                <th>Id</th>
+                <td>@Html.DisplayFor(model => model.Id)</td>
+            </tr>
+            <tr>
+                <th>CodigoProducto</th>
+                <td>@Html.DisplayFor(model => model.CodigoProducto)</td>
+            </tr>
+            <tr>
+                <th>NombreProducto</th>
+                <td>@Html.DisplayFor(model => model.NombreProducto)</td>
+            </tr>
+            <tr>
+                <th>Costo</th>
+                <td>@Html.DisplayFor(model => model.Costo)</td>
+            </tr>
+            <tr>
+                <th>Utilidad</th>
+                <td>@Html.DisplayFor(model => model.Utilidad)</td>
+            </tr>
+            <tr>
+                <th>Impuesto</th>
+                <td>@Html.DisplayFor(model => model.Impuesto)</td>
+            </tr>
+            <tr>
+                <th>PrecioVenta</th>
+                <td>@Html.DisplayFor(model => model.PrecioVenta)</td>
+            </tr>
+            <tr>
+                <th>Descuento</th>
+                <td>@Html.DisplayFor(model => model.Descuento)</td>
+            </tr>
+            <tr>
+                <th>CantidadActual</th>
+                <td>@Html.DisplayFor(model => model.CantidadActual)</td>
+            </tr>
+            <tr>
+                <th>Categoria</th>
+                <td>@Html.DisplayFor(model => model.Categoria.Nombre)</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<form asp-action="Delete" class="d-flex flex-row g-2">
+    <input type="hidden" name="id" value="@Model.Id" readonly />
+    <button type="submit" class="btn btn-danger mx-2">Eliminar<i class="bi bi-trash2-fill"></i></button>
+</form>

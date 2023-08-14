@@ -1,0 +1,154 @@
+﻿@model Sistema_Inventario.Models.ProductoModel
+
+@{
+    ViewData["Title"] = "Editar";
+}
+
+<div class="text-center">
+    <h4> Editar Producto <i class="bi bi-plus-square mx-2"></i></h4>
+    <hr />
+</div>
+<div class="container justify-content-center">
+    <div class="row">
+        <div class="co-12">
+            <form asp-action="Editar" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="CodigoProducto" class="control-label"></label>
+                    <input required asp-for="CodigoProducto" class="form-control" />
+                    <span asp-validation-for="CodigoProducto" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="NombreProducto" class="control-label"></label>
+                    <input required asp-for="NombreProducto" class="form-control" />
+                    <span asp-validation-for="NombreProducto" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Costo" class="control-label"></label>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">₡</span>
+                        <input required id="Costo" type="text" class="form-control" asp-for="Costo">
+                    </div>
+                    <span asp-validation-for="Costo" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Utilidad" class="control-label"></label>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">%</span>
+                        <input required id="utilidad" asp-for="Utilidad" type="number" class="form-control" readonly>
+                    </div>
+                    <span asp-validation-for="Utilidad" class="text-danger"></span>
+                </div>
+                <label asp-for="Impuesto" class="control-label"></label>
+                <div class="form-group">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">₡</span>
+                        <input required id="impuesto" type="number" asp-for="Impuesto" class="form-control" readonly>
+                    </div>
+                    <span asp-validation-for="Impuesto" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PrecioVenta" class="control-label"></label>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">₡</span>
+                        <input required id="PrecioVenta" asp-for="PrecioVenta" type="text" class="form-control">
+                    </div>
+                    <span asp-validation-for="PrecioVenta" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Descuento Colones</label>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">₡</span>
+                        <input required id="descuentoColones" type="number" class="form-control">
+                    </div>
+                    <span asp-validation-for="Descuento" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Descuento" class="control-label"></label>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">%</span>
+                        <input required id="descuentoPorcentaje" asp-for="Descuento" type="text" class="form-control">
+                    </div>
+                    <span asp-validation-for="Descuento" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CantidadActual" class="control-label"></label>
+                    <input required asp-for="CantidadActual" class="form-control" />
+                    <span asp-validation-for="CantidadActual" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CategoriaId" class="control-label"></label>
+                    <select required asp-for="CategoriaId" class="form-control" asp-items="ViewBag.CategoriaId"></select>
+                    <span asp-validation-for="CategoriaId" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-3">
+                    <a class="btn btn-outline-primary mx-2" asp-action="Index"><i class="bi bi-arrow-left-square mx-2"></i>Volver</a>
+                    <button type="submit" class="btn btn-outline-success"><i class="bi bi-plus-square mx-1"></i>Editar</button>
+                </div>
+                <input type="hidden" name="id" value="@Model.Id" readonly />
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function () {
+            $("#Costo, #PrecioVenta").on("input", function () {
+                var costo = parseFloat($("#Costo").val());
+                var precioVenta = parseFloat($("#PrecioVenta").val());
+
+                if (!isNaN(costo) && !isNaN(precioVenta) && costo !== 0) {
+                    var ganancia = precioVenta - costo;
+                    var utilidad = (ganancia / costo) * 100;
+                    var IVA = costo * 0.13;
+
+                    $("#utilidad").val(utilidad.toFixed(2));
+                    $("#impuesto").val(IVA.toFixed(2));
+                } else {
+                    $("#utilidad").val("");
+                    $("#impuesto").val("");
+                }
+            });
+
+            $("#descuentoColones").on("input", function () {
+                var descuentoColones = parseFloat($(this).val());
+
+                if (!isNaN(descuentoColones)) {
+                    var costo = parseFloat($("#PrecioVenta").val());
+                    var descuentoPorcentaje = (descuentoColones / costo) * 100;
+
+                    $("#descuentoPorcentaje").val(descuentoPorcentaje.toFixed(2)).prop("readonly", true);
+                } else {
+                    $("#descuentoPorcentaje").val('').prop("readonly", false);
+                }
+            });
+
+            $("#descuentoPorcentaje").on("input", function () {
+                var descuentoPorcentaje = parseFloat($(this).val());
+
+                if (!isNaN(descuentoPorcentaje)) {
+                    var costo = parseFloat($("#PrecioVenta").val());
+                    var descuentoColones = costo * (descuentoPorcentaje / 100);
+
+                    $("#descuentoColones").val(descuentoColones.toFixed(2)).prop("readonly", true);
+                } else {
+                    $("#descuentoColones").val('').prop("readonly", false);
+                }
+            });
+        });
+    </script>
+   <script>
+    var descuentoPorcentaje = parseFloat($("#descuentoPorcentaje").val());
+    var costo = parseFloat($("#PrecioVenta").val());
+
+    if (!isNaN(descuentoPorcentaje) && !isNaN(costo)) {
+        var descuentoColones = costo * (descuentoPorcentaje / 100);
+        $("#descuentoColones").val(descuentoColones.toFixed(2)).prop("readonly", true);
+    }
+</script>
+
+}

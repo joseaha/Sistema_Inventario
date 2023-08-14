@@ -1,0 +1,63 @@
+﻿@model IEnumerable<Sistema_Inventario.Models.ProductoModel>
+
+@{
+    ViewData["Title"] = "ObtenerProductosPorCategoria";
+}
+
+<div class="text-center">
+    <h4>Lista de productos eliminados<i class="bi bi-list-ul mx-2"></i></h4>
+    <hr />
+</div>
+
+@if (Model.Any())
+{
+    <div class="table">
+        <table class="table-responsive">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(m => m.Id)</th>
+                    <th>@Html.DisplayNameFor(m => m.CodigoProducto)</th>
+                    <th>@Html.DisplayNameFor(m => m.NombreProducto)</th>
+                    <th>@Html.DisplayNameFor(m => m.Categoria)</th>
+                    <th>@Html.DisplayNameFor(m => m.CantidadActual)</th>
+                    <th>@Html.DisplayNameFor(m => m.Utilidad)</th>
+                    <th>@Html.DisplayNameFor(m => m.Descuento)</th>
+                    <th>@Html.DisplayNameFor(m => m.Impuesto)</th>
+                    <th>@Html.DisplayNameFor(m => m.Costo)</th>
+                    <th>@Html.DisplayNameFor(m => m.PrecioVenta)</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(m => item.Id)</td>
+                        <td>@Html.DisplayFor(m => item.CodigoProducto)</td>
+                        <td>@Html.DisplayFor(m => item.NombreProducto)</td>
+                        <td>@Html.DisplayFor(m => item.Categoria.Nombre)</td>
+                        <td>@Html.DisplayFor(m => item.CantidadActual)</td>
+                        <td>@Html.DisplayFor(m => item.Utilidad)%</td>
+                        <td>@Html.DisplayFor(m => item.Descuento)%</td>
+                        <td>₡@Html.DisplayFor(m => item.Impuesto)</td>
+                        <td>₡@Html.DisplayFor(m => item.Costo)</td>
+                        <td>₡@Html.DisplayFor(m => item.PrecioVenta)</td>
+                        <td>
+                            <form asp-action="Restablecer" asp-controller="Productos" method="post">
+                                <input type="hidden" name="id" value="@item.Id" />
+                                <button type="submit" class="ms-2 btn btn-outline-secondary">
+                                    <i class="bi bi-arrow-counterclockwise mx-2"></i>Restaurar
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    
+}
+else
+{
+    <p>No hay registros</p>
+}

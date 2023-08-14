@@ -1,0 +1,104 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    var ultimosTresProductos = ViewData["UltimosTresProductos"] as List<ProductoModel>;
+    var ultimasTresCategorias = ViewData["ultimasTresCategorias"] as List<CategoriaModel>;
+
+}
+
+<div class="text-center mt-5 pt-5">
+    <h2>Dashboard</h2>
+    <hr class="border border-dark border-1 opacity-75">
+</div>
+<div class="container mt-5 pt-5">
+    <div class="row  justify-content-evenly g-3 ">
+        <div class="col-1 text-center count-container mx-5 p-0">
+            <p class="text-white count">@ViewData["TotalCategorias"]</p>
+            <hr />
+            <p class="text-white">Total categorias</p>
+        </div>
+        <div class="col-1 text-center count-container mx-5 p-0">
+            <p class="text-white count">@ViewData["TotalProductos"]</p>
+            <hr />
+            <p class="text-white">Total Productos</p>
+        </div>
+        <div class="col-1 text-center count-container mx-5 p-0">
+            <p class="text-white count">@ViewData["Cantidad"] </p>
+            <hr />
+            <p class="text-white">Categoria con mas productos:@ViewData["CantidadProductosCategoriaConMasProductos"]</p>
+        </div>
+    </div>
+    <div class="row justify-content-evenly  mt-5 pt-5 ">
+        <div class="col-6">
+                <div class="text-center">
+                    <h4>Productos</h4>
+                    <p>Ultimos 3 registros</p>
+                    <hr class="border border-dark border-1 opacity-75">
+                </div>
+            @if (ultimosTresProductos != null && ultimosTresProductos.Count > 0)
+            {
+                <table class="table">
+                    <thead>
+                        <tr class="border-dark">
+                            <th scope="col">#</th>
+                            <th scope="col">Código de Producto</th>
+                            <th scope="col">Nombre de Producto</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-group-divider">
+                        @foreach (var producto in ultimosTresProductos)
+                        {
+                            <tr class="border-dark">
+                                <th scope="row">@producto.Id</th>
+                                <td>@producto.CodigoProducto</td>
+                                <td>@producto.NombreProducto</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p>No se encontraron productos.</p>
+            }
+
+        </div>
+        <div class="col-6 ">
+            <div class="text-center">
+                <h4>Categorias</h4>
+                <p>Ultimos 3 registros</p>
+                <hr class="border border-dark border-1 opacity-75">
+            </div>
+            @if (ultimasTresCategorias != null && ultimasTresCategorias.Count > 0)
+            {
+                <table class="table">
+                    <thead>
+                        <tr class="border-dark">
+                            <th scope="col">#</th>
+                            <th scope="col">Nombre Categoria</th>
+                            <th scope="col">Descripcion categoria</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-group-divider">
+                        @foreach (var producto in ultimasTresCategorias)
+                        {
+                            <tr class="border-dark">
+                                <th scope="row">@producto.Id</th>
+                                <td>@producto.Nombre</td>
+                                <td>@producto.Descripcion</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p>No se encontraron productos.</p>
+            }
+
+        </div>
+    </div>
+</div>
+<div class="row justify-content-center">
+    <hr class="border border-dark border-1 opacity-75">
+</div>
+

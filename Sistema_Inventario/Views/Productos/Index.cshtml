@@ -1,0 +1,163 @@
+﻿@model IEnumerable< Sistema_Inventario.Models.ProductoModel>;
+@{
+    ViewData["Title"] = "Inicio Productos";
+
+}
+
+<div class="container text-center ">
+    <h2><i class="bi bi-boxes mx-2"></i>Productos</h2>
+    <hr class="border border-dark border-1 opacity-75">
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            <a  asp-action="Create" asp-controller="Productos" class="btn btn-outline-primary btn-lg"><i class="bi bi-plus"></i>Agregar Poducto</a>
+        </div>
+        <div class="col-6  d-flex justify-content-end">
+            <a asp-action="ProductosEliminados" asp-controller="Productos" data- class=" ms-2 btn btn-outline-danger open-modal btn-lg"><i class="bi bi-trash2"></i>Productos eliminados</a>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-sm-12 offset-12">
+            <div class="card border">
+                <div class="card-header bg-dark text-center">
+                    <h3 class="text-white"><strong>Lista de Productos</strong></h3>
+                </div>
+                <div class="card-body ">
+                    <div class="table-responsive">
+                        @if (Model.Count() > 0)
+                        {
+                            <table class="tabletable-bordered text-center" id="tblProductos" width="100%" cellpadding="0">
+                                <thead>
+                                    <tr>
+                                        <th>@Html.DisplayNameFor(m => m.Id)</th>
+                                        <th>@Html.DisplayNameFor(m => m.CodigoProducto)</th>
+                                        <th>@Html.DisplayNameFor(m => m.NombreProducto)</th>
+                                        <th>@Html.DisplayNameFor(m => m.Categoria)</th>
+                                        <th>@Html.DisplayNameFor(m => m.CantidadActual)</th>
+                                        <th>@Html.DisplayNameFor(m => m.Utilidad)</th>
+                                        <th>@Html.DisplayNameFor(m => m.Descuento)</th>
+                                        <th>@Html.DisplayNameFor(m => m.Impuesto)</th>
+                                        <th>@Html.DisplayNameFor(m => m.Costo)</th>
+                                        <th>@Html.DisplayNameFor(m => m.PrecioVenta)</th>
+
+                                        <th>Opciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-center justify-content-center a">
+                                    <div class="modal fade" id="MyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div id="modalContentContainer">
+                                                        <!-- Aquí se cargará el contenido de las vistas parciales -->
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr >
+                                            <td>@Html.DisplayFor(m => item.Id)</td>
+                                            <td>@Html.DisplayFor(m => item.CodigoProducto)</td>
+                                            <td>@Html.DisplayFor(m => item.NombreProducto)</td>
+                                            <td>@Html.DisplayFor(m => item.Categoria.Nombre)</td>
+                                            <td>@Html.DisplayFor(m => item.CantidadActual)</td>
+                                            <td>@Html.DisplayFor(m => item.Utilidad)%</td>
+                                            <td>@Html.DisplayFor(m => item.Descuento)%</td>
+                                            <td>₡@Html.DisplayFor(m => item.Impuesto)</td>
+                                            <td>₡@Html.DisplayFor(m => item.Costo)</td>
+                                            <td>₡@Html.DisplayFor(m => item.PrecioVenta)</td>
+
+                                            <td class="text-center">
+                                                <div class="row-12">
+                                                    <div class="col-12">
+                                                        <button onclick="showPartial(this)" class="mx-auto btn btn-outline-info open-modal btn-sm mb-2" data-url="/Productos/Detalle" data-id="@item.Id">
+                                                            <i class="bi bi-info-circle-fill mx-1"></i>Detalles
+                                                        </button>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <button onclick="showPartial(this)" class="mx-auto btn btn-outline-danger open-modal btn-sm mb-2" data-url="/Productos/delete" data-id="@item.Id">
+                                                            <i class="bi bi-trash3-fill mx-2"></i>Borrar
+                                                        </button>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <a asp-action="_editarProducto" asp-controller="Productos" class="mx-auto btn btn-outline-success open-modal btn-sm mb-2"
+                                                           asp-route-id="@item.Id">
+                                                            <i class="bi bi-pencil-fill mx-2"></i>Editar
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                        else
+                        {
+                            <p>No hay registros</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('#tblProductos').DataTable({
+                language: {
+                    "decimal": "",
+                    "emptyTable": "No hay información",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                    "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                    "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                    "infoPostFix": "",
+                    "thousands": ",",
+                    "lengthMenu": "Mostrar _MENU_ Entradas",
+                    "loadingRecords": "Cargando...",
+                    "processing": "Procesando...",
+                    "search": "Buscar:",
+                    "zeroRecords": "Sin resultados encontrados",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Ultimo",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    }
+                }
+            });
+        });
+    </script>
+    <script>
+        //Obtenemos la dirrecion del controlador que realizar la accion y el Id del modelo a tratar
+        function showPartial(triggerElement) {
+            var url = $(triggerElement).data("url");
+            var id = $(triggerElement).data("id");
+
+            // Concatenar el ID en la URL
+            url += "?id=" + id;
+            //realizamos una peticion get al controlador indicado en la ruta que se obtuvo del triggerElement
+            //function (data) En jQuery, las funciones de callback son funciones que se pasan como argumentos a métodos
+            // se ejecutan en ciertos eventos o cuando se completa una acción específica.
+            $.get(url, function (data) {
+                //La respuesta del peticon get es codigo html una vista
+                $("#modalContentContainer").html(data);
+
+                $("#MyModal").modal("show");//Mostramos el modal
+            });
+        }
+    </script>
+    }
