@@ -19,14 +19,14 @@ namespace Sistema_Inventario.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            return View(await _context.productoModels.Include(p => p.Categoria)
+            return View(await _context.productos.Include(p => p.Categoria)
                 .Where(p => p.Estado==true)
                 .ToListAsync());
         }
         [HttpGet]
         public async Task<IActionResult> ProductosEliminados()
         {
-            return View(await _context.productoModels.Where(c => c.Estado == false).ToListAsync());
+            return View(await _context.productos.Where(c => c.Estado == false).ToListAsync());
         }
         [HttpPost]
         public async Task<IActionResult> Restablecer(int? id)
@@ -38,7 +38,7 @@ namespace Sistema_Inventario.Controllers
                     return NotFound();
                 }
 
-                var producto = await _context.productoModels.FindAsync(id);
+                var producto = await _context.productos.FindAsync(id);
 
                 if (producto == null)
                 {
@@ -59,21 +59,21 @@ namespace Sistema_Inventario.Controllers
         [HttpGet]
         public IActionResult Create() {
 
-            ViewData["CategoriaId"] = new SelectList(_context.categoriaModels.Where(n => n.Estado == true), "Id", "Nombre");
+            ViewData["CategoriaId"] = new SelectList(_context.categorias.Where(n => n.Estado == true), "Id", "Nombre");
             return View();
         }
 
         [HttpPost]
         [ActionName("Create")]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(ProductoModel Model)
+        public IActionResult Create(Producto Model)
         {
             try
             {
                 if (!ModelState.IsValid)
                 {
                     Model.Estado = true;
-                    _context.productoModels.Add(Model);
+                    _context.productos.Add(Model);
                     _context.SaveChanges();
                 }
                 //Regresa a la vista Index
@@ -89,7 +89,7 @@ namespace Sistema_Inventario.Controllers
         public IActionResult detalle(int id)
         {
 
-            var producto = _context.productoModels.Include(p => p.Categoria).FirstOrDefault(p => p.Id == id);
+            var producto = _context.productos.Include(p => p.Categoria).FirstOrDefault(p => p.Id == id);
 
             return PartialView("detalle", producto);
 
@@ -100,7 +100,7 @@ namespace Sistema_Inventario.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int? id)
         {
-            var productoModel = await _context.productoModels.FindAsync(id);
+            var productoModel = await _context.productos.FindAsync(id);
             if (productoModel == null)
             {
                 return RedirectToAction(nameof(Index));
@@ -108,7 +108,7 @@ namespace Sistema_Inventario.Controllers
             try
             {
                 productoModel.Estado = false;
-                _context.productoModels.Update(productoModel);
+                _context.productos.Update(productoModel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -120,19 +120,19 @@ namespace Sistema_Inventario.Controllers
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            var producto = _context.productoModels.Include(p => p.Categoria).FirstOrDefault(p => p.Id == id);
+            var producto = _context.productos.Include(p => p.Categoria).FirstOrDefault(p => p.Id == id);
             return PartialView("delete",producto);
         }
         [HttpGet]
         public IActionResult _editarProducto(int id)
         {
-            var producto = _context.productoModels.FirstOrDefault(c => c.Id == id);
-            ViewData["CategoriaId"] = new SelectList(_context.categoriaModels.Where(n => n.Estado == true), "Id", "Nombre");
+            var producto = _context.productos.FirstOrDefault(c => c.Id == id);
+            ViewData["CategoriaId"] = new SelectList(_context.categorias.Where(n => n.Estado == true), "Id", "Nombre");
             return View("_Editar", producto);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Editar(int id,ProductoModel modelo)
+        public async Task<IActionResult> Editar(int id,Producto modelo)
         {
             if (id != modelo.Id)
             {

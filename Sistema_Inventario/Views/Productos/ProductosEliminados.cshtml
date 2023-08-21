@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Sistema_Inventario.Models.ProductoModel>
+﻿@model IEnumerable<Sistema_Inventario.Models.Producto>
 
 @{
     ViewData["Title"] = "ObtenerProductosPorCategoria";
@@ -43,7 +43,7 @@
                         <td>₡@Html.DisplayFor(m => item.Costo)</td>
                         <td>₡@Html.DisplayFor(m => item.PrecioVenta)</td>
                         <td>
-                            <form asp-action="Restablecer" asp-controller="Productos" method="post">
+                            <form asp-action="CambiarEstado" asp-controller="Cliente" method="post">
                                 <input type="hidden" name="id" value="@item.Id" />
                                 <button type="submit" class="ms-2 btn btn-outline-secondary">
                                     <i class="bi bi-arrow-counterclockwise mx-2"></i>Restaurar

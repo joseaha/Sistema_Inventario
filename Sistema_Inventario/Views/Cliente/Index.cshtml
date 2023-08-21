@@ -1,0 +1,195 @@
+﻿@model IEnumerable< Sistema_Inventario.Models.Cliente>;
+@{
+    ViewData["Title"] = "Inicio Clientes";
+}
+
+<div class="container text-center " style="width:110%;">
+    <h2><i class="bi bi-shop-window mx-2"></i>Clientes</h2>
+    <hr class="border border-dark border-1 opacity-75">
+</div>
+<div class="row" style="width:107%;">
+    <div class="col-6">
+        <a asp-action="Create" asp-controller="Cliente" class="btn btn-outline-primary btn-lg"><i class="bi bi-plus"></i>Agregar Cliente</a>
+    </div>
+    <div class="col-6  d-flex justify-content-end">
+        <a asp-action="ClienteEliminados" asp-controller="Cliente" data- class=" ms-2 btn btn-outline-danger open-modal btn-lg"><i class="bi bi-trash2"></i>Clientes eliminados</a>
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="col-12">
+        <div class="card " style="width:105%;">
+            <div class="card-header bg-dark text-center">
+                <h3 class="text-white"><strong>Lista de Clientes</strong></h3>
+            </div>
+            <div class="card-body table-responsive-xxl">
+                @if (Model.Count() > 0)
+                {
+                    <table class="table table-borderless" id="tblCliente" cellpadding="0">
+                        <thead>
+                            <tr>
+                                <th>@Html.DisplayNameFor(m => m.Id)</th>
+                                <th>@Html.DisplayNameFor(m => m.Nombre)</th>
+                                <th>@Html.DisplayNameFor(m => m.PrimerApellido)</th>
+                                <th>@Html.DisplayNameFor(m => m.SegundoApellido)</th>
+                                <th>@Html.DisplayNameFor(m => m.Sexo)</th>
+                                <th>@Html.DisplayNameFor(m => m.Telefono)</th>
+                                <th>@Html.DisplayNameFor(m => m.Correo)</th>
+                                <th>Provincia</th>
+                                <th>Canton</th>
+                                <th>Distrito</th>
+                                <th>Barrio</th>
+                                <th>@Html.DisplayNameFor(m => m.OtraDireccion)</th>
+                                <th>@Html.DisplayNameFor(m => m.CreditoMaximo)</th>
+                                <th>@Html.DisplayNameFor(m => m.cantidadDiasCredito)</th>
+                                <th>Opciones</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-group-divider text-md-end">
+                            @foreach (var item in Model)
+                            {
+                                <tr class="direccion-span"
+                                    data-provincia="@item.Provincia"
+                                    data-canton="@item.Canton"
+                                    data-distrito="@item.Distrito"
+                                    data-barrio="@item.Barrio">
+                                    <td>@Html.DisplayFor(m => item.Id)</td>
+                                    <td>@Html.DisplayFor(m => item.Nombre)</td>
+                                    <td>@Html.DisplayFor(m => item.PrimerApellido)</td>
+                                    <td>@Html.DisplayFor(m => item.SegundoApellido)</td>
+                                    <td>@Html.DisplayFor(m => item.Sexo)</td>
+                                    <td>@Html.DisplayFor(m => item.Telefono)</td>
+                                    <td>@Html.DisplayFor(m => item.Correo)</td>
+                                    <td class="provincia"></td>
+                                    <td class="canton"></td>
+                                    <td class="distrito"></td>
+                                    <td class="barrio"></td>
+                                    <td>@Html.DisplayFor(m => item.OtraDireccion)</td>
+                                    <td>@Html.DisplayFor(m => item.CreditoMaximo)</td>
+                                    <td>@Html.DisplayFor(m => item.cantidadDiasCredito)</td>
+                                    <td class="text-center gap-2">
+                                        <button onclick="showPartial(this)" class="btn btn-outline-info open-modal m-2" data-url="/Cliente/Details" data-id="@item.Id">
+                                            <i class="bi bi-info-circle-fill mx-1"></i> Detalle
+                                        </button>
+                                        <button onclick="showPartial(this)" class="btn btn-outline-danger open-modal m-2" data-url="/Cliente/Delete" data-id="@item.Id">
+                                            <i class="bi bi-trash3-fill mx-1"></i> Borrar
+                                        </button>
+                                        <a asp-action="Edit" asp-controller="Cliente" class="btn btn-outline-success m-2" asp-route-id="@item.Id">
+                                            <i class="bi bi-pencil-fill mx-2"></i> Editar
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <p>No hay registros</p>
+                }
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="modal fade" id="MyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="modalContentContainer">
+                    <!-- Aquí se cargará el contenido de las vistas parciales -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('#tblCliente').DataTable({
+                language: {
+                    "decimal": "",
+                    "emptyTable": "No hay información",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                    "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                    "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                    "infoPostFix": "",
+                    "thousands": ",",
+                    "lengthMenu": "Mostrar _MENU_ Entradas",
+                    "loadingRecords": "Cargando...",
+                    "processing": "Procesando...",
+                    "search": "Buscar:",
+                    "zeroRecords": "Sin resultados encontrados",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Ultimo",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    }
+                }
+            });
+        });
+
+        function mostrarDireccionCompleta() {
+            var direccionSpans = $('.direccion-span');
+            direccionSpans.each(function () {
+                var row = $(this);
+                var provincia = row.data('provincia');
+                var canton = row.data('canton');
+                var distrito = row.data('distrito');
+                var barrio = row.data('barrio');
+
+                var provinciaElement = row.find('.provincia');
+                var cantonElement = row.find('.canton');
+                var distritoElement = row.find('.distrito');
+                var barrioElement = row.find('.barrio');
+
+                $.get('/Cliente/GetLocationNames',
+                    {
+                        provinciaId: provincia,
+                        cantonId: canton,
+                        distritoId: distrito,
+                        barrioId: barrio
+                    },
+                    function (data) {
+                        provinciaElement.text(data.provincia);
+                        cantonElement.text(data.canton);
+                        distritoElement.text(data.distrito);
+                        barrioElement.text(data.barrio);
+                    }
+                );
+            });
+        }
+        $(document).ready(function () {
+            mostrarDireccionCompleta();
+        });
+    </script>
+
+    <script>
+        //Obtenemos la dirrecion del controlador que realizar la accion y el Id del modelo a tratar
+        function showPartial(triggerElement) {
+            var url = $(triggerElement).data("url");
+            var id = $(triggerElement).data("id");
+
+            // Concatenar el ID en la URL
+            url += "?id=" + id;
+            //realizamos una peticion get al controlador indicado en la ruta que se obtuvo del triggerElement
+            //function (data) En jQuery, las funciones de callback son funciones que se pasan como argumentos a métodos
+            // se ejecutan en ciertos eventos o cuando se completa una acción específica.
+            $.get(url, function (data) {
+                //La respuesta del peticon get es codigo html una vista
+                $("#modalContentContainer").html(data);
+
+                $("#MyModal").modal("show");//Mostramos el modal
+            });
+        }
+
+
+    </script>
+
+    }

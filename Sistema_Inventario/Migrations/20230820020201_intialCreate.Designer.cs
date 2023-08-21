@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sistema_Inventario.Datos;
 
@@ -10,9 +11,11 @@ using Sistema_Inventario.Datos;
 namespace Sistema_Inventario.Migrations
 {
     [DbContext(typeof(ApplicationDbContext.ApplicationDbContexto))]
-    partial class ApplicationDbContextoModelSnapshot : ModelSnapshot
+    [Migration("20230820020201_intialCreate")]
+    partial class intialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

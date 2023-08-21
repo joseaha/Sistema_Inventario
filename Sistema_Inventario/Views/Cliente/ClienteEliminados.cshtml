@@ -1,0 +1,112 @@
+﻿@model IEnumerable<Sistema_Inventario.Models.Cliente>
+
+@{
+    ViewData["Title"] = "Lista clientes eliminados";
+}
+
+<div class="text-center">
+    <h4>Lista de clientes eliminados <i class="bi bi-list-ul mx-2"></i></h4>
+    <hr />
+</div>
+
+@if (Model.Any())
+{
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(m => m.Id)</th>
+                    <th>@Html.DisplayNameFor(m => m.Nombre)</th>
+                    <th>@Html.DisplayNameFor(m => m.PrimerApellido)</th>
+                    <th>@Html.DisplayNameFor(m => m.SegundoApellido)</th>
+                    <th>@Html.DisplayNameFor(m => m.Sexo)</th>
+                    <th>@Html.DisplayNameFor(m => m.Telefono)</th>
+                    <th>@Html.DisplayNameFor(m => m.Correo)</th>
+                    <th>Provincia</th>
+                    <th>Canton</th>
+                    <th>Distrito</th>
+                    <th>Barrio</th>
+                    <th>@Html.DisplayNameFor(m => m.OtraDireccion)</th>
+                    <th>@Html.DisplayNameFor(m => m.CreditoMaximo)</th>
+                    <th>@Html.DisplayNameFor(m => m.cantidadDiasCredito)</th>
+                    <th>Opciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr class="direccion-span"
+                        data-provincia="@item.Provincia"
+                        data-canton="@item.Canton"
+                        data-distrito="@item.Distrito"
+                        data-barrio="@item.Barrio">
+                        <td>@item.Id</td>
+                        <td>@Html.DisplayFor(m => item.Nombre)</td>
+                        <td>@Html.DisplayFor(m => item.PrimerApellido)</td>
+                        <td>@Html.DisplayFor(m => item.SegundoApellido)</td>
+                        <td>@Html.DisplayFor(m => item.Sexo)</td>
+                        <td>@Html.DisplayFor(m => item.Telefono)</td>
+                        <td>@Html.DisplayFor(m => item.Correo)</td>
+                        <td class="provincia"></td>
+                        <td class="canton"></td>
+                        <td class="distrito"></td>
+                        <td class="barrio"></td>
+                        <td>@Html.DisplayFor(m => item.OtraDireccion)</td>
+                        <td>@Html.DisplayFor(m => item.CreditoMaximo)</td>
+                        <td>@Html.DisplayFor(m => item.cantidadDiasCredito)</td>
+                        <td>
+                            <form asp-action="CambiarEstado" asp-controller="Cliente" method="post">
+                                <input type="hidden" name="id" value="@item.Id" />
+                                <button type="submit" class="btn btn-sm btn-outline-secondary">
+                                    <i class="bi bi-arrow-counterclockwise"></i> Restaurar
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <p>No hay registros</p>
+}
+
+@section Scripts{
+    <script>
+        function mostrarDireccionCompleta() {
+            var direccionSpans = $('.direccion-span');
+            direccionSpans.each(function () {
+                var row = $(this);
+                var provincia = row.data('provincia');
+                var canton = row.data('canton');
+                var distrito = row.data('distrito');
+                var barrio = row.data('barrio');
+
+                var provinciaElement = row.find('.provincia');
+                var cantonElement = row.find('.canton');
+                var distritoElement = row.find('.distrito');
+                var barrioElement = row.find('.barrio');
+
+                $.get('/Cliente/GetLocationNames',
+                    {
+                        provinciaId: provincia,
+                        cantonId: canton,
+                        distritoId: distrito,
+                        barrioId: barrio
+                    },
+                    function (data) {
+                        provinciaElement.text(data.provincia);
+                        cantonElement.text(data.canton);
+                        distritoElement.text(data.distrito);
+                        barrioElement.text(data.barrio);
+                    }
+                );
+            });
+        }
+        $(document).ready(function () {
+            mostrarDireccionCompleta();
+        });
+    </script>
+}

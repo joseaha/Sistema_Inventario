@@ -18,18 +18,18 @@ namespace Sistema_Inventario.Controllers
 
         public IActionResult Index()
         {
-            int totalCategorias = _context.categoriaModels.Count();
-            int totalProductos = _context.productoModels.Count();
+            int totalCategorias = _context.categorias.Count();
+            int totalProductos = _context.productos.Count();
             ViewData["TotalCategorias"] = totalCategorias;
             ViewData["TotalProductos"] = totalProductos;
-            var categoriaConMasProductos =_context.categoriaModels
+            var categoriaConMasProductos =_context.categorias
             .Include(c => c.Productos)
             .OrderByDescending(c => c.Productos.Count).FirstOrDefault();
             ViewData["CantidadProductosCategoriaConMasProductos"] = categoriaConMasProductos != null ? categoriaConMasProductos.Nombre : "N/A";
             ViewData["cantidad"] = categoriaConMasProductos != null ? categoriaConMasProductos.Productos.Count() : "0";
-            var ultimosTresProductos = _context.productoModels.OrderByDescending(p => p.Id).Where(p => p.Estado == true).Take(3).ToList();
+            var ultimosTresProductos = _context.productos.OrderByDescending(p => p.Id).Where(p => p.Estado == true).Take(3).ToList();
             ViewData["UltimosTresProductos"] = ultimosTresProductos;
-            var ultimasTresCategorias = _context.categoriaModels.OrderByDescending(p => p.Id).Where(p => p.Estado == true).Take(3).ToList();
+            var ultimasTresCategorias = _context.categorias.OrderByDescending(p => p.Id).Where(p => p.Estado == true).Take(3).ToList();
             ViewData["ultimasTresCategorias"] = ultimasTresCategorias;
             return View();
         }

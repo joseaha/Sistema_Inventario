@@ -1,0 +1,73 @@
+﻿@model Sistema_Inventario.Models.Cliente
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<div class="text-center">
+    <h4> Cliente por  eliminar: @Model.Nombre <i class="bi bi-box mx-2"></i></h4>
+    <hr />
+</div>
+<div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Id)</th>
+                <td>@Html.DisplayFor(model => model.Id)</td>
+            </tr>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.TipoIdentificacion)</th>
+                <td>@Html.DisplayFor(model => model.TipoIdentificacion)</td>
+            </tr>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Nombre)</th>
+                <td>@Html.DisplayFor(model => model.Nombre)</td>
+            </tr>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.PrimerApellido)</th>
+                <td>@Html.DisplayFor(model => model.PrimerApellido)</td>
+            </tr>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.SegundoApellido)</th>
+                <td>@Html.DisplayFor(model => model.SegundoApellido)</td>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Sexo)</th>
+                <td>@Html.DisplayFor(model => model.Sexo)</td>
+            </tr>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Provincia   )</th>
+                <td>@Html.DisplayFor(model => model.Provincia)</td>
+            </tr>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Canton)</th>
+                <td>@Html.DisplayFor(model => model.Canton)</td>
+            </tr>
+            <tr>
+                <
+                <th>@Html.DisplayNameFor(model => model.Distrito)</th>
+                <td>@Html.DisplayFor(model => model.Distrito)</td>
+            </tr>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Barrio)</th>
+                <td>@Html.DisplayFor(model => model.Barrio)</td>
+            </tr>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.OtraDireccion)</th>
+                <td>@Html.DisplayFor(model => model.OtraDireccion)</td>
+            </tr>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.CreditoMaximo)</th>
+                <td>@Html.DisplayFor(model => model.CreditoMaximo)</td>
+            </tr>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.cantidadDiasCredito)</th>
+                <td>@Html.DisplayFor(model => model.cantidadDiasCredito)</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<form asp-action="CambiarEstado" class="d-flex flex-row g-2">
+    <input type="hidden" name="id" value="@Model.Id" readonly />
+    <button type="submit" class="btn btn-danger mx-2">Eliminar<i class="bi bi-trash2-fill"></i></button>
+</form>

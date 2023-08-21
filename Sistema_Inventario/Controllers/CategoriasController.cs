@@ -19,12 +19,12 @@ namespace Sistema_Inventario.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            return View(await _context.categoriaModels.Where(c => c.Estado == true).ToListAsync());
+            return View(await _context.categorias.Where(c => c.Estado == true).ToListAsync());
         }
         [HttpGet]
         public async Task<IActionResult> CategoriasEliminadas()
         {
-            return View(await _context.categoriaModels.Where(c => c.Estado == false).ToListAsync());
+            return View(await _context.categorias.Where(c => c.Estado == false).ToListAsync());
         }
         [HttpPost]
         public async Task<IActionResult> Restablecer(int? id)
@@ -36,7 +36,7 @@ namespace Sistema_Inventario.Controllers
                     return NotFound();
                 }
 
-                var categoria = await _context.categoriaModels.FindAsync(id);
+                var categoria = await _context.categorias.FindAsync(id);
 
                 if (categoria == null)
                 {
@@ -58,7 +58,7 @@ namespace Sistema_Inventario.Controllers
       *************/
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CategoriaModel categoriaModel)
+        public async Task<IActionResult> Create(Categoria categoriaModel)
         {
             try
             {
@@ -66,7 +66,7 @@ namespace Sistema_Inventario.Controllers
                     categoriaModel.Estado = true;
                 if (!ModelState.IsValid)
                 {
-                    _context.categoriaModels.Add(categoriaModel);
+                    _context.categorias.Add(categoriaModel);
                     await _context.SaveChangesAsync();
                 }
                 return RedirectToAction("Index");
@@ -91,7 +91,7 @@ namespace Sistema_Inventario.Controllers
         [HttpGet]
         public IActionResult DetalleCategoria(int id)
         {
-            var categoria = _context.categoriaModels.Find(id);
+            var categoria = _context.categorias.Find(id);
 
             return PartialView("_Detalles", categoria);
 
@@ -106,7 +106,7 @@ namespace Sistema_Inventario.Controllers
                 return NotFound();
             }
             //Si el Id Ingresado es correcto obtenemos el conctacto que se desea obtner los detalles
-            var categoria = await _context.categoriaModels.FirstOrDefaultAsync(m => m.Id == id);
+            var categoria = await _context.categorias.FirstOrDefaultAsync(m => m.Id == id);
 
             if (categoria == null)
             {
@@ -125,7 +125,7 @@ namespace Sistema_Inventario.Controllers
                 return NotFound();
             }
 
-            var categoria = _context.categoriaModels.Find(id);
+            var categoria = _context.categorias.Find(id);
             return PartialView("_Delete", categoria);
         }
         [HttpPost]
@@ -139,7 +139,7 @@ namespace Sistema_Inventario.Controllers
                     return NotFound();
                 }
 
-                var categoria = await _context.categoriaModels.FindAsync(id);
+                var categoria = await _context.categorias.FindAsync(id);
 
                 if (categoria == null)
                 {
@@ -160,7 +160,7 @@ namespace Sistema_Inventario.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Editar(int id, [Bind("Id,Nombre,Descripcion")] CategoriaModel modelo)
+        public async Task<IActionResult> Editar(int id, [Bind("Id,Nombre,Descripcion")] Categoria modelo)
         {
             if (id != modelo.Id)
             {
@@ -172,7 +172,7 @@ namespace Sistema_Inventario.Controllers
                 try
                 {
 
-                    var categoriaExistente = await _context.categoriaModels.FindAsync(id);
+                    var categoriaExistente = await _context.categorias.FindAsync(id);
                     if (categoriaExistente == null)
                     {
                         return NotFound();
@@ -200,12 +200,12 @@ namespace Sistema_Inventario.Controllers
         [HttpGet]
         public IActionResult EditarCategoria(int id)
         {
-            var categoriaModel = _context.categoriaModels.FirstOrDefault(c => c.Id == id);
+            var categoriaModel = _context.categorias.FirstOrDefault(c => c.Id == id);
             return PartialView("Editar", categoriaModel);
         }
         public IActionResult ObtenerProductosPorCategoria(int id)
         {
-            return PartialView(_context.productoModels.Where(p => p.CategoriaId == id).ToList());
+            return PartialView(_context.productos.Where(p => p.CategoriaId == id).ToList());
 
         }
 

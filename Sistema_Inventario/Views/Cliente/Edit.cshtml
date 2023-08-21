@@ -1,0 +1,242 @@
+﻿@model Sistema_Inventario.Models.Cliente
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+
+<div class="text-center">
+    <h4> Editar Cliente <i class="bi bi-person-add"></i></h4>
+    <hr />
+</div>
+<form asp-action="Edit">
+    <div class="row pt-4 justify-content-between">
+        <div class="col-md-6">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group m-2">
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" class="form-control" />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
+            <div class="form-group m-2">
+                @Html.LabelFor(model => model.TipoIdentificacion, htmlAttributes: new { @class = "control-label " })
+                <div class="col-12">
+                    <select asp-for="TipoIdentificacion" id="TipoId" class="form-control">
+                        @foreach (var tipo in Enum.GetValues(typeof(TipoCedula)))
+                        {
+                            <option value="@((int)tipo)">@tipo</option>
+                        }
+                    </select>
+                </div>
+                @Html.ValidationMessageFor(model => model.TipoIdentificacion, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group m-2">
+                <label asp-for="Nombre" class="control-label"></label>
+                <input asp-for="Nombre" class="form-control" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+            <div class="form-group m-2">
+                <label asp-for="PrimerApellido" class="control-label"></label>
+                <input asp-for="PrimerApellido" class="form-control" />
+                <span asp-validation-for="PrimerApellido" class="text-danger"></span>
+            </div>
+            <div class="form-group m-2">
+                <label asp-for="SegundoApellido" class="control-label"></label>
+                <input asp-for="SegundoApellido" class="form-control" />
+                <span asp-validation-for="SegundoApellido" class="text-danger"></span>
+            </div>
+
+            <div class="form-group m-2">
+                @Html.LabelFor(model => model.Sexo, htmlAttributes: new { @class = "control-label col-12" })
+                <div class="col-12">
+                    <select asp-for="Sexo" class="form-control">
+                        @foreach (var tipo in Enum.GetValues(typeof(SexoEnum)))
+                        {
+                            <option value="@((int)tipo)">@tipo</option>
+                        }
+                    </select>
+                    @Html.ValidationMessageFor(model => model.Sexo, "", new { @class = "text-danger" })
+
+                </div>
+            </div>
+
+            <div class="form-group m-2">
+                <label asp-for="Telefono" class="control-label"></label>
+                <input asp-for="Telefono" class="form-control" />
+                <span asp-validation-for="Telefono" class="text-danger"></span>
+            </div>
+            <div class="form-group m-2">
+                <label asp-for="Correo" class="control-label"></label>
+                <input asp-for="Correo" class="form-control" />
+                <span asp-validation-for="Correo" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6 ">
+            <div class="form-group m-2">
+                <label asp-for="Provincia" class="control-label"></label>
+                <select asp-for="Provincia" id="Provincia" class="form-control"></select>
+                <span asp-validation-for="Provincia" class="text-danger"></span>
+            </div>
+            <div class="form-group m-2">
+                <label asp-for="Canton" class="control-label"></label>
+                <select asp-for="Canton" id="Canton" class="form-control"></select>
+                <span asp-validation-for="Canton" class="text-danger"></span>
+            </div>
+            <div class="form-group m-2">
+                <label asp-for="Distrito" class="control-label"></label>
+                <select asp-for="Distrito" id="Distrito" class="form-control"></select>
+                <span asp-validation-for="Distrito" class="text-danger"></span>
+            </div>
+            <div class="form-group m-2">
+                <label asp-for="Barrio" class="control-label"></label>
+                <select asp-for="Barrio" id="Barrio" class="form-control"></select>
+                <span asp-validation-for="Barrio" class="text-danger"></span>
+            </div>
+            <div class="form-group m-2">
+                <label asp-for="CreditoMaximo" class="control-label"></label>
+                <input asp-for="CreditoMaximo" class="form-control" />
+                <span asp-validation-for="CreditoMaximo" class="text-danger"></span>
+            </div>
+            <div class="form-group m-1 row">
+                <div class="col-md-4">
+                    <label asp-for="cantidadDiasCredito" class="control-label">Cantidad de Días Crédito</label>
+                    <input id="cantidadDias" asp-for="cantidadDiasCredito" class="form-control" readonly />
+                    <span asp-validation-for="cantidadDiasCredito" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <label class="control-label">Fecha Inicio Crédito</label>
+                    <input type="date" id="start" name="trip-start" value="@DateTime.Now.ToString("yyyy-MM-dd")" min="2018-01-01" max="2099-12-31" class="form-control" />
+                </div>
+                <div class="col-md-4">
+                    <label class="control-label">Fecha Fin Crédito</label>
+                    <input type="date" id="end" name="trip-end" value="@DateTime.Now.ToString("yyyy-MM-dd")" min="2018-01-01" max="2099-12-31" class="form-control" />
+                </div>
+            </div>
+
+            <div class="form-group m-2">
+                <label asp-for="OtraDireccion" class="control-label"></label>
+                <textarea asp-for="OtraDireccion" class="form-control" id="Descripcion" rows="4"></textarea>
+                <span asp-validation-for="OtraDireccion" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group m-2 justify-content-center">
+            <input type="hidden" checked class="form-check-input" asp-for="estado" />
+            <button asp-controller="Cliente" asp-action="Index" class="btn btn-outline-primary btn-lg"><i class="bi bi-arrow-left-short ms-2"></i>Volver</button>
+            <button type="submit" class="btn btn-outline-success btn-lg"><i class="bi bi-plus-square mx-1"></i>Editar</button>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#TipoId").on('change', function () {
+                var selectValue = $("#TipoId").val();
+                if (selectValue != @(Convert.ToInt32(TipoCedula.Nacional))) {
+                    $("#PrimerApellido").prop('disabled', true);
+                    $("#SegundoApellido").prop('disabled', true);
+                } else {
+                    $("#PrimerApellido").prop('disabled', false);
+                    $("#SegundoApellido").prop('disabled', false);
+                }
+            }).change();
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            const $provincia = $("#Provincia");
+            const $canton = $("#Canton");
+            const $distrito = $("#Distrito");
+            const $barrio = $("#Barrio");
+
+            function populateDropdown($dropdown, data) {
+                $dropdown.empty();
+                $.each(data, function (index, item) {
+                    $dropdown.append(`<option value="${item.value}">${item.text}</option>`);
+                });
+            }
+
+            function getCantonesAndPopulate() {
+                const selectedProvincia = $provincia.val();
+                if (selectedProvincia) {
+                    $.getJSON("/Cliente/GetCantones", { provinciaId: selectedProvincia })
+                        .done(function (data) {
+                            populateDropdown($canton, data);
+                        })
+                        .fail(function () {
+                            console.error("Failed to retrieve cantones.");
+                        });
+                } else {
+                    $canton.empty();
+                    $distrito.empty();
+                    $barrio.empty();
+                }
+            }
+
+            function getDistritosAndPopulate() {
+                const selectedProvincia = $provincia.val();
+                const selectedCanton = $canton.val();
+                if (selectedCanton) {
+                    $.getJSON("/Cliente/GetDistritos", { provinciaId: selectedProvincia, cantonId: selectedCanton })
+                        .done(function (data) {
+                            populateDropdown($distrito, data);
+                        })
+                        .fail(function () {
+                            console.error("Failed to retrieve distritos.");
+                        });
+                } else {
+                    $distrito.empty();
+                    $barrio.empty();
+                }
+            }
+
+            function getBarriosAndPopulate() {
+                const selectedProvincia = $provincia.val();
+                const selectedCanton = $canton.val();
+                const selectedDistrito = $distrito.val();
+                if (selectedDistrito) {
+                    $.getJSON("/Cliente/GetBarrios", { provinciaId: selectedProvincia, cantonId: selectedCanton, distritoId: selectedDistrito })
+                        .done(function (data) {
+                            populateDropdown($barrio, data);
+                        })
+                        .fail(function () {
+                            console.error("Failed to retrieve barrios.");
+                        });
+                } else {
+                    $barrio.empty();
+                }
+            }
+
+            // Event handlers
+            $provincia.on("change", getCantonesAndPopulate);
+            $canton.on("change", getDistritosAndPopulate);
+            $distrito.on("change", getBarriosAndPopulate);
+
+            // Initial population
+            $.getJSON("/Cliente/GetProvincias")
+                .done(function (data) {
+                    populateDropdown($provincia, data);
+                })
+                .fail(function () {
+                    console.error("Failed to retrieve provincias.");
+                });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            // Manejar el cambio en las fechas
+            $("#start, #end").change(function () {
+                var startDate = new Date($("#start").val());
+                var endDate = new Date($("#end").val());
+
+                if (!isNaN(startDate) && !isNaN(endDate)) {
+                    var timeDiff = Math.abs(endDate.getTime() - startDate.getTime());
+                    var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                    $("#cantidadDias").val(diffDays);
+                }
+            });
+        });
+    </script>
+
+        }

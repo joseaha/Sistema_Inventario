@@ -2,7 +2,7 @@
 
 namespace Sistema_Inventario.Models
 {
-    public class ProductoModel
+    public class Producto
     {
         [Key]
         public int Id { get; set; }
@@ -46,6 +46,6 @@ namespace Sistema_Inventario.Models
 
         [Display(Name = "Nombre de la Categoría")]
         public int CategoriaId { get; set; }
-        public CategoriaModel Categoria { get; set; }
+        public Categoria Categoria { get; set; }
     }
 }

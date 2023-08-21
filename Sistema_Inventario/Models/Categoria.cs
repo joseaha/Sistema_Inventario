@@ -2,7 +2,7 @@
 
 namespace Sistema_Inventario.Models
 {
-    public class CategoriaModel
+    public class Categoria
     {
         [Key]
         public int Id { get; set; }
@@ -14,6 +14,6 @@ namespace Sistema_Inventario.Models
 
         public bool Estado { get; set; }
 
-        public ICollection<ProductoModel> Productos { get; set; }
+        public ICollection<Producto> Productos { get; set; }
     }
 }
